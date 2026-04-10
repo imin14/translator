@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Translate — Immigrant Invest</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #001A70;
+    --ink-soft: rgba(0,26,112,0.08);
+    --ink-hover: rgba(0,26,112,0.12);
+    --ink-glow: rgba(0,26,112,0.05);
+    --text: #1d1d1f;
+    --text-secondary: #86868b;
+    --text-tertiary: #aeaeb2;
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --border: rgba(0,0,0,0.06);
+    --border-focus: rgba(0,26,112,0.3);
+    --surface: #fafafa;
+    --success: #34c759;
+    --error: #ff3b30;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 100px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 48px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { width: 100%; max-width: 560px; }
+
+  /* Header */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+    padding: 0 4px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .brand-mark {
+    width: 36px; height: 36px;
+    background: var(--ink);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-mark svg { width: 18px; height: 18px; }
+  .brand-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .brand-text span {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-top: 1px;
+    letter-spacing: 0;
+  }
+
+  /* Segmented Control */
+  .segments {
+    display: flex;
+    background: rgba(0,0,0,0.04);
+    border-radius: var(--radius-md);
+    padding: 3px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: fadeDown 0.6s ease 0.05s both;
+  }
+  .segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    user-select: none;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  .segment:hover { color: var(--text); }
+  .segment.active {
+    color: var(--ink);
+    background: var(--card);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0.5px 1px rgba(0,0,0,0.04);
+  }
+  .segment svg {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.25s;
+  }
+  .segment.active svg { opacity: 1; }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 0 0.5px var(--border), 0 2px 12px rgba(0,0,0,0.04);
+    overflow: hidden;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  /* Tab Content */
+  .panel { display: none; padding: 28px; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Form elements */
+  .field { margin-bottom: 22px; }
+  .field:last-of-type { margin-bottom: 24px; }
+
+  .label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  textarea, select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+  }
+  textarea {
+    min-height: 88px;
+    padding: 12px 14px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+  textarea:focus, select:focus {
+    outline: none;
+    background: var(--card);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 4px var(--ink-glow);
+  }
+  textarea::placeholder { color: var(--text-tertiary); }
+
+  select {
+    padding: 11px 14px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  /* Locale chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+  .chip:hover {
+    color: var(--ink);
+    background: var(--ink-soft);
+  }
+  .chip.on {
+    color: var(--card);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .chip input { display: none; }
+
+  /* Row of selects */
+  .row { display: flex; gap: 10px; }
+  .row .field { flex: 1; }
+
+  /* Options */
+  .options { margin-bottom: 24px; }
+  .opt-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+  }
+  .opt-row + .opt-row { border-top: 1px solid var(--border); }
+  .opt-label { font-size: 14px; color: var(--text); font-weight: 400; }
+
+  /* Toggle */
+  .sw { position: relative; width: 44px; height: 26px; cursor: pointer; flex-shrink: 0; }
+  .sw input { display: none; }
+  .sw-track {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.08);
+    border-radius: 13px;
+    transition: background 0.25s;
+  }
+  .sw-knob {
+    position: absolute;
+    width: 22px; height: 22px;
+    top: 2px; left: 2px;
+    background: var(--card);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.08);
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  .sw input:checked ~ .sw-track { background: var(--ink); }
+  .sw input:checked ~ .sw-knob { transform: translateX(18px); }
+
+  /* Separator */
+  .sep { height: 1px; background: var(--border); margin: 4px 0 16px; }
+
+  /* Submit */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--card);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: -0.1px;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:hover { filter: brightness(1.15); transform: translateY(-0.5px); }
+  .btn:active { transform: scale(0.995); filter: brightness(1); }
+  .btn:disabled {
+    background: var(--text-tertiary);
+    cursor: default;
+    transform: none;
+    filter: none;
+  }
+
+  /* Status */
+  .status {
+    margin-top: 14px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+  }
+  .status.show { display: flex; }
+  .status.sending { background: var(--ink-soft); color: var(--ink); }
+  .status.success { background: rgba(52,199,89,0.08); color: #248a3d; }
+  .status.error { background: rgba(255,59,48,0.08); color: var(--error); }
+
+  .dot-pulse { display: flex; gap: 4px; align-items: center; }
+  .dot-pulse span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.2s ease infinite;
+  }
+  .dot-pulse span:nth-child(2) { animation-delay: 0.15s; }
+  .dot-pulse span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Hint */
+  .hint {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 0 2px;
+  }
+
+  /* Footer */
+  .foot {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.2px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  /* Anims */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  @media (max-width: 480px) {
+    body { padding: 24px 12px 60px; }
+    .panel { padding: 20px 18px; }
+    .segment { font-size: 12px; padding: 9px 6px; gap: 5px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 101 118" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M49.2233 58.057L16.1234 25.242L0 41.245L16.925 58.057L0 74.869L16.1234 90.873L49.2233 58.057Z" fill="#fff"/>
+        <path d="M25.2428 18.092L65.2641 58.689L25.2428 99.299L43.0655 117.379L100.971 58.689L43.0655 0L25.2428 18.092Z" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      Translate
+      <span>Immigrant Invest</span>
+    </div>
+  </div>
+
+  <div class="segments">
+    <div class="segment active" onclick="switchTab('articles')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+      Articles
+    </div>
+    <div class="segment" onclick="switchTab('tables')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+      Tables
+    </div>
+    <div class="segment" onclick="switchTab('components')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Components
+    </div>
+  </div>
+
+  <div class="card">
+    <!-- Articles -->
+    <div class="panel active" id="p-articles">
+      <div class="hint">Full article translation — text blocks, headings, lead, FAQ, and tables.</div>
+      <div class="field">
+        <div class="label">Storyblok URLs</div>
+        <textarea id="a-urls" placeholder="Paste one URL per line…"></textarea>
+      </div>
+      <div class="field">
+        <div class="label">Locales</div>
+        <div class="chips" id="a-loc">
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="es">ES</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="de">DE</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="tr">TR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="ar">AR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="all">All</label>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="options">
+        <div class="opt-row">
+          <span class="opt-label">Skip FAQ</span>
+          <label class="sw"><input type="checkbox" id="a-nofaq"><span class="sw-track"></span><span class="sw-knob"></span></label>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Skip headings &amp; title</span>
+          <label class="sw"><input type="checkbox" id="a-nohead"><span class="sw-track"></span><span class="sw-knob"></span></label>
+        </div>
+      </div>
+      <button class="btn" onclick="send('articles',this)">Translate</button>
+      <div class="status" id="s-articles"></div>
+    </div>
+
+    <!-- Tables -->
+    <div class="panel" id="p-tables">
+      <div class="hint">Translate only tables inside articles. All other content stays untouched.</div>
+      <div class="field">
+        <div class="label">Storyblok URLs</div>
+        <textarea id="t-urls" placeholder="Paste one URL per line…"></textarea>
+      </div>
+      <div class="field">
+        <div class="label">Locales</div>
+        <div class="chips" id="t-loc">
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="es">ES</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="de">DE</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="tr">TR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="ar">AR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="all">All</label>
+        </div>
+      </div>
+      <button class="btn" onclick="send('tables',this)">Translate Tables</button>
+      <div class="status" id="s-tables"></div>
+    </div>
+
+    <!-- Components -->
+    <div class="panel" id="p-components">
+      <div class="hint">Translate story-level components — Expert, Investment Program, CTA, Header, and more.</div>
+      <div class="field">
+        <div class="label">Storyblok URLs</div>
+        <textarea id="c-urls" placeholder="Paste one URL per line…"></textarea>
+      </div>
+      <div class="field">
+        <div class="label">Locales</div>
+        <div class="chips" id="c-loc">
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="es">ES</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="de">DE</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="tr">TR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="ar">AR</label>
+          <label class="chip" onclick="flip(this)"><input type="checkbox" value="all">All</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <div class="label">Component</div>
+          <select id="c-type">
+            <option value="other">Auto-detect</option>
+            <option value="expert">Expert</option>
+            <option value="investmentProgram">Investment Program</option>
+            <option value="cta">CTA</option>
+          </select>
+        </div>
+        <div class="field">
+          <div class="label">Mode</div>
+          <select id="c-mode">
+            <option value="text">Text</option>
+            <option value="links">Links</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" onclick="send('components',this)">Translate Components</button>
+      <div class="status" id="s-components"></div>
+    </div>
+  </div>
+
+  <div class="foot">Immigrant Invest · Translation Pipeline</div>
+</div>
+
+<script>
+const WH='https://n8n-prod-960265555894.europe-west3.run.app/webhook/translate-ui';
+
+function switchTab(t){
+  document.querySelectorAll('.segment').forEach((s,i)=>{
+    s.classList.toggle('active',['articles','tables','components'][i]===t);
+  });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+t));
+}
+
+function flip(el){
+  const cb=el.querySelector('input');
+  cb.checked=!cb.checked;
+  el.classList.toggle('on',cb.checked);
+  const g=el.closest('.chips');
+  if(cb.value==='all'&&cb.checked){
+    g.querySelectorAll('.chip').forEach(c=>{const x=c.querySelector('input');if(x.value!=='all'){x.checked=false;c.classList.remove('on')}});
+  }else if(cb.value!=='all'&&cb.checked){
+    const a=g.querySelector('input[value=all]');
+    if(a){a.checked=false;a.closest('.chip').classList.remove('on')}
+  }
+}
+
+function loc(id){return Array.from(document.querySelectorAll('#'+id+' input:checked')).map(c=>c.value)}
+
+function stat(id,type,msg){
+  const el=document.getElementById(id);
+  el.className='status show '+type;
+  el.innerHTML=type==='sending'?'<span class="dot-pulse"><span></span><span></span><span></span></span>'+msg:msg;
+}
+
+async function send(tab,btn){
+  const p={articles:'a',tables:'t',components:'c'}[tab];
+  const urls=document.getElementById(p+'-urls').value;
+  const locales=loc(p+'-loc');
+  const sid='s-'+tab;
+
+  if(!urls.trim())return stat(sid,'error','Paste at least one URL');
+  if(!locales.length)return stat(sid,'error','Select at least one locale');
+
+  let body;
+  if(tab==='articles'){
+    body={urls,locales,contentType:'article',mode:'text',onlyTables:[],'no FAQ':document.getElementById('a-nofaq').checked?['yes']:[],'no headings & title':document.getElementById('a-nohead').checked?['yes']:[]};
+  }else if(tab==='tables'){
+    body={urls,locales,contentType:'article',mode:'text',onlyTables:['yes'],'no FAQ':[],'no headings & title':[]};
+  }else{
+    body={urls,locales,contentType:document.getElementById('c-type').value,mode:document.getElementById('c-mode').value,onlyTables:[],'no FAQ':[],'no headings & title':[]};
+  }
+
+  btn.disabled=true;
+  stat(sid,'sending',' Sending…');
+
+  try{
+    const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok)stat(sid,'success','✓ Sent — check #translation-reports');
+    else stat(sid,'error','Error '+r.status);
+  }catch(e){stat(sid,'error','Network error')}
+  btn.disabled=false;
+}
+</script>
+</body>
+</html>
