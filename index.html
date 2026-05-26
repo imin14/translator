@@ -353,10 +353,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
       Articles
     </div>
-    <div class="segment" onclick="switchTab('tables')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
-      Tables
-    </div>
     <div class="segment" onclick="switchTab('components')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       Components
@@ -394,27 +390,6 @@
       </div>
       <button class="btn" onclick="send('articles',this)">Translate</button>
       <div class="status" id="s-articles"></div>
-    </div>
-
-    <!-- Tables -->
-    <div class="panel" id="p-tables">
-      <div class="hint">Translate only tables inside articles. All other content stays untouched.</div>
-      <div class="field">
-        <div class="label">Storyblok URLs</div>
-        <textarea id="t-urls" placeholder="Paste one URL per line…"></textarea>
-      </div>
-      <div class="field">
-        <div class="label">Locales</div>
-        <div class="chips" id="t-loc">
-          <label class="chip" onclick="flip(this)"><input type="checkbox" value="es">ES</label>
-          <label class="chip" onclick="flip(this)"><input type="checkbox" value="de">DE</label>
-          <label class="chip" onclick="flip(this)"><input type="checkbox" value="tr">TR</label>
-          <label class="chip" onclick="flip(this)"><input type="checkbox" value="ar">AR</label>
-          <label class="chip" onclick="flip(this)"><input type="checkbox" value="all">All</label>
-        </div>
-      </div>
-      <button class="btn" onclick="send('tables',this)">Translate Tables</button>
-      <div class="status" id="s-tables"></div>
     </div>
 
     <!-- Components -->
@@ -466,7 +441,7 @@ const WH='https://n8n-prod-960265555894.europe-west3.run.app/webhook/translate-u
 
 function switchTab(t){
   document.querySelectorAll('.segment').forEach((s,i)=>{
-    s.classList.toggle('active',['articles','tables','components'][i]===t);
+    s.classList.toggle('active',['articles','components'][i]===t);
   });
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+t));
 }
@@ -493,7 +468,7 @@ function stat(id,type,msg){
 }
 
 async function send(tab,btn){
-  const p={articles:'a',tables:'t',components:'c'}[tab];
+  const p={articles:'a',components:'c'}[tab];
   const urls=document.getElementById(p+'-urls').value;
   const locales=loc(p+'-loc');
   const sid='s-'+tab;
@@ -504,8 +479,6 @@ async function send(tab,btn){
   let body;
   if(tab==='articles'){
     body={urls,locales,contentType:'article',mode:'text',onlyTables:[],'no FAQ':document.getElementById('a-nofaq').checked?['yes']:[],'no headings & title':document.getElementById('a-nohead').checked?['yes']:[]};
-  }else if(tab==='tables'){
-    body={urls,locales,contentType:'article',mode:'text',onlyTables:['yes'],'no FAQ':[],'no headings & title':[]};
   }else{
     body={urls,locales,contentType:document.getElementById('c-type').value,mode:document.getElementById('c-mode').value,onlyTables:[],'no FAQ':[],'no headings & title':[]};
   }
